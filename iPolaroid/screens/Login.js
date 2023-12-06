@@ -4,9 +4,34 @@ import BackButton from "../components/BackButton";
 import Card from "../components/Card";
 import CustomButton from "../components/CustomButton";
 import Svg, { Path } from "react-native-svg";   
-import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication';
+import { appleAuth } from '@invertase/react-native-apple-authentication';
+import auth from '@react-native-firebase/auth';
 
-const Login = ({navigation}) => {      
+const Login = ({navigation}) => {     
+    
+    async function onAppleButtonPress() {
+        console.log("apple button pressed")
+        // Start the Apple sign-in request
+        const appleAuthRequestResponse = await appleAuth.performRequest({
+          requestedOperation: appleAuth.Operation.LOGIN,
+          requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+        });
+      
+        // Ensure Apple returned a user identityToken
+        if (!appleAuthRequestResponse.identityToken) {
+          throw 'Apple Sign-In failed - no identity token returned';
+        }
+      
+        // Create a Firebase credential from the response
+        const { identityToken, nonce } = appleAuthRequestResponse;
+        const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
+
+        
+      
+        // Sign the user in with the credential
+        return auth().signInWithCredential(appleCredential);
+      }
+      
       
     const style = StyleSheet.create({
         card:{
@@ -59,7 +84,8 @@ const Login = ({navigation}) => {
 
                     {/* for now it is navigating directly to tabs */}
                     {/* check if the below works properly */}
-                <CustomButton callback={async ()=>navigation.navigate("Tab")} text={"Sign In with Apple"}/>
+                <CustomButton callback={async ()=>onAppleButtonPress()} text={"Sign In with Apple"}/>
+
             </View>
             
         </SafeAreaView>

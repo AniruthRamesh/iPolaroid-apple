@@ -7,8 +7,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './screens/Login.js';
 import OnBoarding from './screens/Onboarding.js';
 import Tab from './screens/Tab.js';
+import firestore from '@react-native-firebase/firestore';
 
 export default function App() {
+
+  
+
+
+
 
     const Stack = createNativeStackNavigator();
   return(
