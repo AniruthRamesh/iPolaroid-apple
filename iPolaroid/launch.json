@@ -1,0 +1,14 @@
+{
+    "name": "iOS Device",
+    "program": "${workspaceRoot}/.vscode/launchReactNative.js",
+    "type": "reactnative",
+    "request": "launch",
+    "platform": "ios",
+    "sourceMaps": true,
+    "target": "device",
+    "outDir": "${workspaceRoot}/.vscode/.react",
+    "runArguments": [
+      "--device",
+      "iPhone (168)"
+    ],
+  }
