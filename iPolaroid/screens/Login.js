@@ -6,31 +6,46 @@ import CustomButton from "../components/CustomButton";
 import Svg, { Path } from "react-native-svg";   
 import { appleAuth } from '@invertase/react-native-apple-authentication';
 import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ReactNativeBiometrics, { BiometryTypes } from 'react-native-biometrics';
+
+
 
 const Login = ({navigation}) => {     
     
     async function onAppleButtonPress() {
-        console.log("apple button pressed")
-        // Start the Apple sign-in request
-        const appleAuthRequestResponse = await appleAuth.performRequest({
-          requestedOperation: appleAuth.Operation.LOGIN,
-          requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-        });
-      
-        // Ensure Apple returned a user identityToken
-        if (!appleAuthRequestResponse.identityToken) {
-          throw 'Apple Sign-In failed - no identity token returned';
-        }
-      
-        // Create a Firebase credential from the response
-        const { identityToken, nonce } = appleAuthRequestResponse;
-        const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
+        console.log("apple button pressed");
+        try {
+            // Start the Apple sign-in request
+            const appleAuthRequestResponse = await appleAuth.performRequest({
+                requestedOperation: appleAuth.Operation.LOGIN,
+                requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+            });
+          
+            // Ensure Apple returned a user identityToken
+            if (!appleAuthRequestResponse.identityToken) {
+                throw 'Apple Sign-In failed - no identity token returned';
+            }
+    
+            // Create a Firebase credential from the response
+            const { identityToken, nonce } = appleAuthRequestResponse;
+            const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
+    
+            // Sign the user in with the credential
+            const userCredential = await auth().signInWithCredential(appleCredential);
+            
+            // Store user data in AsyncStorage
+            await AsyncStorage.setItem('user', JSON.stringify(userCredential.user));
 
         
-      
-        // Sign the user in with the credential
-        return auth().signInWithCredential(appleCredential);
-      }
+            // Navigate to the home screen
+            navigation.navigate('Tab'); // Replace 'Home' with your home screen's name
+        } catch (error) {
+            console.error(error);
+            // Handle errors as needed
+        }
+    }
+    
       
       
     const style = StyleSheet.create({
@@ -85,7 +100,7 @@ const Login = ({navigation}) => {
                     {/* for now it is navigating directly to tabs */}
                     {/* check if the below works properly */}
                 <CustomButton callback={async ()=>onAppleButtonPress()} text={"Sign In with Apple"}/>
-
+                
             </View>
             
         </SafeAreaView>

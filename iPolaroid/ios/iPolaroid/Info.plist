@@ -8,6 +8,9 @@
 	<string>PermanentMarker-Regular.ttf</string>
 	<string>ChelseaMarket-Regular.ttf</string>
 	</array>
+
+	<key>NSFaceIDUsageDescription</key>
+	<string>Enabling Face ID allows you quick access to RealApp</string>
 	
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
