@@ -1,9 +1,9 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Feed from "./Feed";
-import Post from "./Post";
 import PostHome from "./PostHome";
 import { Svg,Path } from "react-native-svg";
+import Logout from "./Logout";
 
 
 const Tab = ({navigation})=>{
@@ -18,7 +18,13 @@ const Tab = ({navigation})=>{
             </Svg>
         );
     }
-        
+    
+    const LogoutIcon = ({color,size}) => (
+      <Svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+        <Path fill="none" d="M0 0h24v24H0z" />
+        <Path d="m17 7-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
+    </Svg>
+    );
 
     const PostIcon = ({color,size}) => (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
@@ -34,8 +40,11 @@ const Tab = ({navigation})=>{
             tabBarIcon: ({ focused, color, size }) => {
               if (route.name === 'Feed') {
                 return <FeedIcon color={color} size={size} />;
-              } else if (route.name === 'PostHome') {
+              } else if (route.name === 'New Post') {
                 return <PostIcon color={color} size={size} />;
+              }
+              else if (route.name === 'Logout') {
+                return <LogoutIcon color={color} size={size} />;
               }
             },
             tabBarLabelStyle: {
@@ -46,7 +55,8 @@ const Tab = ({navigation})=>{
             tabBarInactiveTintColor: 'gray',
           })}>
             <Tabs.Screen name="Feed" component={Feed} />
-            <Tabs.Screen name="PostHome" component={PostHome} />
+            <Tabs.Screen name="New Post" component={PostHome} />
+            <Tabs.Screen name="Logout" component={Logout} />
         
         </Tabs.Navigator>
     )

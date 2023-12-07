@@ -1,17 +1,16 @@
 import React from "react";
-import { View,StyleSheet,Image,Text,SafeAreaView , TouchableOpacity,ScrollView} from "react-native";
+import { View, Image, StyleSheet,  SafeAreaView,TouchableOpacity,Text,ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import FeedInfoPreview from "../../components/FeedInfoPreview";
 import { Svg,Path } from "react-native-svg";
+import FeedInfoPreview from "../../components/FeedInfoPreview";
 
 
-const PostPreview = ({route}) => {
-    const {image,caption,description,date} = route.params;
+
+const FeedInfo = ({route}) =>{
+    const data = route.params.data;
+    const { caption, date, description, image, key } = data;
+
     const navigation = useNavigation();
-
-    const post = () => {
-        console.log("Post");
-    }
 
     const style = StyleSheet.create({
         backButton:{
@@ -74,19 +73,14 @@ const PostPreview = ({route}) => {
                     </TouchableOpacity>
                 </View>
 
-            <Text style={style.preview}>Preview</Text>
+            <Text style={style.preview}>Old Memories</Text>
             <View style={style.horizontalDivider}/>
             <ScrollView>
                 <FeedInfoPreview caption={caption} date={date} description={description} image={image}/>
-
-                <View style={style.buttonContainer}>
-                    <TouchableOpacity onPress={post} style={style.button}>
-                        <Text style={style.buttonText}>post</Text>
-                    </TouchableOpacity>
-                </View>
             </ScrollView>
         </SafeAreaView>
     );
-};
 
-export default PostPreview;
+}
+
+export default FeedInfo;
