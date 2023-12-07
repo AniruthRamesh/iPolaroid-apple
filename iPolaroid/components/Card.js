@@ -1,5 +1,6 @@
 import { View,StyleSheet,Image,Text } from "react-native";
 import React from "react";
+import FastImage from "react-native-fast-image";
 import Video from 'react-native-video'; 
 
 
@@ -43,6 +44,12 @@ const Card = ({image,caption}) => {
         return { uri: img };
     };
 
+    function isLocalImage(img){
+        return typeof img === 'number';
+    }
+
+    const islocal = isLocalImage(image);
+
     // Function to check for common video file extensions
     function isVideoFile(filePath) {
         const videoExtensions = ['.mp4', '.avi', '.mov', '.wmv', '.flv', '.mkv']; // Add more as needed
@@ -55,7 +62,8 @@ const Card = ({image,caption}) => {
     return (
         <View style={style.card}>
             <View style={style.container}>
-                {isVideo ? (
+            {
+                isVideo ? (
                     <Video
                         source={{ uri: image }}
                         style={style.image}
@@ -63,9 +71,21 @@ const Card = ({image,caption}) => {
                         resizeMode="cover"
                         paused={true}
                     />
+                ) : islocal ? (
+                    <Image
+                        source={image}
+                        style={style.image}
+                        resizeMode="cover"
+                    />
                 ) : (
-                    <Image style={style.image} source={getImageSource(image)} />
-                )}
+                    <FastImage
+                        source={{ uri: image }}
+                        style={style.image} 
+                        resizeMode={FastImage.resizeMode.cover}
+                    />
+                )
+            }
+
 
             </View>
             <Text style={style.caption}>{caption}</Text>

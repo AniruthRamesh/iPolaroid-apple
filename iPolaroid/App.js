@@ -6,13 +6,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Login from './screens/Login.js';
 import OnBoarding from './screens/Onboarding.js';
-import Tab from './screens/Tab.js';
-import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import firebase from '@react-native-firebase/app';
-import storage from '@react-native-firebase/storage';
 import getFeedData from './services/feedData.js';
-import getDataFromAsyncStorage from './services/retrieveData.js';
+import Tab from './screens/Tab.js';
 
 export default function App() {
   const navigationRef = useNavigationContainerRef();

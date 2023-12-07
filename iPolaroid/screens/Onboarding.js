@@ -3,6 +3,7 @@ import { View,  StyleSheet, Text,  TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Card from "../components/Card";
 import CustomButton from "../components/CustomButton";
+import FastImage from "react-native-fast-image";
 
 
 export default function OnBoarding({navigation}) {
@@ -20,7 +21,7 @@ export default function OnBoarding({navigation}) {
                 
                 
                 <View style={style.card}>
-                    <Card image={onboardingImage} caption={"iPolaroid"} />
+                    <Card image={"https://images.unsplash.com/photo-1519038983316-43241d5d7b61?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} caption={"iPolaroid"} />
                 </View>
 
                 {/* navigate to login */}

@@ -11,19 +11,6 @@ import { useEffect } from "react";
 const Feed = ({navigation,route}) =>{
     const Stack = createNativeStackNavigator();
 
-    // Determine the current route
-    const routeName = getFocusedRouteNameFromRoute(route) ?? 'FeedHome';
-
-    // Hide the bottom tab navigator on certain screens
-    // React.useLayoutEffect(() => {
-    //   if (routeName === 'FeedInfo') {
-    //       navigation.setOptions({ tabBarStyle: { display: 'none' } });
-    //   } else {
-    //       navigation.setOptions({ tabBarStyle: { display: 'flex' } });
-    //   }
-    // }, [navigation, routeName]);
-
-
     return(
         <Stack.Navigator screenOptions={{
             headerShown: false,

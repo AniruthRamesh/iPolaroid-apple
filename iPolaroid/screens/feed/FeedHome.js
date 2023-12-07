@@ -2,6 +2,7 @@ import React, { useEffect,useState } from "react";
 import { View,  StyleSheet, Text,  TouchableOpacity, SafeAreaView,FlatList } from "react-native";
 import Card from "../../components/Card";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import FeedInfo from "./FeedInfo";
 
 const FeedHome = ({navigation}) =>{
     // this below is a sample mimicing how data is going to flow.
