@@ -10,6 +10,7 @@ import { useEffect } from "react";
 
 const Feed = ({navigation,route}) =>{
     const Stack = createNativeStackNavigator();
+    
 
     return(
         <Stack.Navigator screenOptions={{

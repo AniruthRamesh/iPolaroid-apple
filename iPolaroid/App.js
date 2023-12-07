@@ -9,6 +9,7 @@ import OnBoarding from './screens/Onboarding.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import getFeedData from './services/feedData.js';
 import Tab from './screens/Tab.js';
+import { enableScreens } from 'react-native-screens';
 
 export default function App() {
   const navigationRef = useNavigationContainerRef();
@@ -35,6 +36,10 @@ export default function App() {
     const dataGetter = async () => {
         await getFeedData();
     } 
+
+    if (Platform.OS === "ios") {
+      enableScreens(false);
+    }
 
     dataGetter();
 
