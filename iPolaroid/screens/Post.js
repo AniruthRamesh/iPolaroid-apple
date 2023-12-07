@@ -1,6 +1,8 @@
 import React from "react";
 import { View,  StyleSheet, Text,  TouchableOpacity, SafeAreaView } from "react-native";
 import { Svg,Path } from "react-native-svg";
+import { requestLibraryPermission,requestCameraPermission,requestVideoPermission } from "../services/requestPermissions";
+import { PERMISSIONS,check,checkMultiple } from "react-native-permissions";
 
 const Post = ({navigation, route}) =>{
     const style = StyleSheet.create({
@@ -36,51 +38,49 @@ const Post = ({navigation, route}) =>{
     });
 
     const handleVideo = async ()=>{
-        console.log("camera clicked")
-        // requestMultiple([PERMISSIONS.IOS.CAMERA,PERMISSIONS.IOS.MICROPHONE]).then((statuses)=>{
-        //     console.log(statuses)
-        //     if(statuses[PERMISSIONS.IOS.CAMERA] == 'granted' && statuses[PERMISSIONS.IOS.MICROPHONE] == 'granted'){
-        //         console.log("camera and microphone granted")
-        //     }
-        //     else{
-        //         alert("Please allow camera and microphone permissions to use this feature.");
-        //         return;
-        //     }
-        // });
+        
+        checkMultiple([PERMISSIONS.IOS.CAMERA,PERMISSIONS.IOS.MICROPHONE]).then((statuses)=>{
+            if(statuses[PERMISSIONS.IOS.CAMERA] == 'granted' && statuses[PERMISSIONS.IOS.MICROPHONE] == 'granted'){
+                console.log("camera and microphone alreadyyy granted")
+            }
+            else{
+                requestVideoPermission();
+                return;
+            }
+        });
 
-        navigation.navigate('VideoScreen');
+        // navigation.navigate('VideoScreen');
     }
 
     const handleCamera = async ()=>{
-        console.log("camera clicked")
-        // requestMultiple([PERMISSIONS.IOS.CAMERA,PERMISSIONS.IOS.MICROPHONE]).then((statuses)=>{
-        //     console.log(statuses)
-        //     if(statuses[PERMISSIONS.IOS.CAMERA] == 'granted' && statuses[PERMISSIONS.IOS.MICROPHONE] == 'granted'){
-        //         console.log("camera and microphone granted")
-        //     }
-        //     else{
-        //         alert("Please allow camera and microphone permissions to use this feature.");
-        //         return;
-        //     }
-        // });
+        
+        checkMultiple([PERMISSIONS.IOS.CAMERA,PERMISSIONS.IOS.MICROPHONE]).then((statuses)=>{
+            if(statuses[PERMISSIONS.IOS.CAMERA] == 'granted' && statuses[PERMISSIONS.IOS.MICROPHONE] == 'granted'){
+                console.log("camera and microphone already granted")
+            }
+            else{
+                requestCameraPermission();
+                return;
+            }
+        });
 
-        navigation.navigate('CameraScreen');
+        // navigation.navigate('CameraScreen');
     }
 
     const handleLibrary = async ()=>{
-        console.log("library clicked")
-        // requestMultiple([PERMISSIONS.IOS.PHOTO_LIBRARY]).then((statuses)=>{
-        //     console.log(statuses)
-        //     if(statuses[PERMISSIONS.IOS.PHOTO_LIBRARY] == 'granted'){
-        //         console.log("LIBRARY access granted")
-        //     }
-        //     else{
-        //         alert("Please allow Media access for this feature");
-        //         return;
-        //     }
-        // });
+        check(PERMISSIONS.IOS.PHOTO_LIBRARY).then((status)=>{
+            if(status[PERMISSIONS.IOS.PHOTO_LIBRARY] == 'granted'){
+                console.log("library already granted")
+            }
+            else{
+                requestLibraryPermission();
+                return;
+            }
+        });
+        
+       
 
-        navigation.navigate('LibraryScreen');
+        // navigation.navigate('LibraryScreen');
     }
 
     return(

@@ -8,6 +8,15 @@
 	<string>PermanentMarker-Regular.ttf</string>
 	<string>ChelseaMarket-Regular.ttf</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app requires access to the photo library.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires access to the camera for video recording.</string>
+
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app requires access to the microphone for audio recording.</string>
+
+
 
 	<key>NSFaceIDUsageDescription</key>
 	<string>Enabling Face ID allows you quick access to RealApp</string>
