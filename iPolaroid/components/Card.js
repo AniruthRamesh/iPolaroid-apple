@@ -31,7 +31,22 @@ const Card = ({image,caption}) => {
             fontSize: 25,
             textAlign: 'center',
             padding:5
-        }
+        },
+        videoLabel: {
+            position: 'absolute',
+            top: 0, 
+            right: 0, 
+            backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent black
+            color: 'white',
+            padding: 5,
+            borderRadius: 5,
+            fontSize: 13,
+            fontWeight: 'bold',
+            fontFamily: 'ChelseaMarket-Regular',
+            textShadowColor: 'rgba(0, 0, 0, 0.8)',
+            textShadowOffset: { width: 1, height: 1 },
+            textShadowRadius: 3,
+        },
     });
 
     // Function to determine if the image source is local or a network URI
@@ -52,7 +67,7 @@ const Card = ({image,caption}) => {
 
     // Function to check for common video file extensions
     function isVideoFile(filePath) {
-        const videoExtensions = ['.mp4', '.avi', '.mov', '.wmv', '.flv', '.mkv']; // Add more as needed
+        const videoExtensions = ['.mp4', '.avi', '.mov', '.wmv', '.flv', '.mkv','MOV']; // Add more as needed
         return filePath && typeof filePath === 'string' && videoExtensions.some(ext => filePath.includes(ext));
     }
 
@@ -64,13 +79,16 @@ const Card = ({image,caption}) => {
             <View style={style.container}>
             {
                 isVideo ? (
-                    <Video
+                    <>
+                        <Video
                         source={{ uri: image }}
                         style={style.image}
                         controls
                         resizeMode="cover"
                         paused={true}
-                    />
+                        />
+                        <Text style={style.videoLabel}>Video</Text>
+                    </>
                 ) : islocal ? (
                     <Image
                         source={image}

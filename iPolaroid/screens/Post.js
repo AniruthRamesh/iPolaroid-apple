@@ -3,6 +3,7 @@ import { View,  StyleSheet, Text,  TouchableOpacity, SafeAreaView } from "react-
 import { Svg,Path } from "react-native-svg";
 import { requestLibraryPermission,requestCameraPermission,requestVideoPermission } from "../services/requestPermissions";
 import { PERMISSIONS,check,checkMultiple } from "react-native-permissions";
+import { launchCamera,launchImageLibrary } from "react-native-image-picker";
 
 const Post = ({navigation, route}) =>{
     const style = StyleSheet.create({
@@ -49,7 +50,15 @@ const Post = ({navigation, route}) =>{
             }
         });
 
-        // navigation.navigate('VideoScreen');
+        const result = await launchCamera({mediaType:'video'},(response)=>{
+            const data = response.assets;
+            if(data==undefined){
+                return;
+            }
+            const uri = data[0].uri;
+            // console.log(uri);
+            navigation.navigate('Preview',{image:uri});
+        });
     }
 
     const handleCamera = async ()=>{
@@ -64,7 +73,15 @@ const Post = ({navigation, route}) =>{
             }
         });
 
-        // navigation.navigate('CameraScreen');
+        const result = await launchCamera({mediaType:'photo'},(response)=>{
+            const data = response.assets;
+            if(data==undefined){
+                return;
+            }
+            const uri = data[0].uri;
+            navigation.navigate('Preview',{image:uri});
+            
+        });
     }
 
     const handleLibrary = async ()=>{
@@ -78,9 +95,14 @@ const Post = ({navigation, route}) =>{
             }
         });
         
-       
-
-        // navigation.navigate('LibraryScreen');
+        const result = await launchImageLibrary({mediaType:'mixed'},(response)=>{
+            const data = response.assets;
+            if(data==undefined){
+                return;
+            }
+            const uri = data[0].uri;
+            navigation.navigate('Preview',{image:uri});
+        });
     }
 
     return(
