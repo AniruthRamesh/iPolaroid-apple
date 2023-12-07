@@ -4,10 +4,11 @@ import Feed from "./Feed";
 import PostHome from "./PostHome";
 import { Svg,Path } from "react-native-svg";
 import Logout from "./Logout";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
-
-const Tab = ({navigation})=>{
-    const Tabs = createBottomTabNavigator();
+const Tab = ({navigation,route})=>{
+    const Tabs = createBottomTabNavigator();  
 
     const FeedIcon = ({color,size}) => {
         return (
@@ -35,6 +36,7 @@ const Tab = ({navigation})=>{
 
     return(
         <Tabs.Navigator screenOptions={({ route }) => ({
+          
             headerShown: false,
             gestureEnabled: false,
             tabBarIcon: ({ focused, color, size }) => {
@@ -47,13 +49,18 @@ const Tab = ({navigation})=>{
                 return <LogoutIcon color={color} size={size} />;
               }
             },
+            tabBarStyle:{
+              display: getTabBarVisibility(route) ? 'flex' : 'none',
+
+            },
             tabBarLabelStyle: {
               fontSize: 14,
               fontFamily: 'ChelseaMarket-Regular', 
             },
             tabBarActiveTintColor: 'black',
-            tabBarInactiveTintColor: 'gray',
-          })}>
+            tabBarInactiveTintColor: 'gray',  
+          })}
+          >
             <Tabs.Screen name="Feed" component={Feed} />
             <Tabs.Screen name="New Post" component={PostHome} />
             <Tabs.Screen name="Logout" component={Logout} />
@@ -62,5 +69,13 @@ const Tab = ({navigation})=>{
     )
 
 }
+
+const getTabBarVisibility = (route) => {
+    const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
+    if (routeName === 'FeedInfo') {
+      return false;
+    }
+    return true;
+  }
 
 export default Tab;

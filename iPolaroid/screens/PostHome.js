@@ -9,9 +9,9 @@ import Preview from "./post/Preview.js";
 import PostPreview from "./post/PostPreview.js";
 import PostData from "./post/PostData.js";
 
-
-const PostHome = ({navigation}) => {
+const PostHome = ({navigation,route}) => {
     const Stack = createNativeStackNavigator();
+
     return(
         <Stack.Navigator screenOptions={{
             headerShown: false,

@@ -1,9 +1,8 @@
 import React from "react";
 import { View,  StyleSheet, Text,  TouchableOpacity, SafeAreaView } from "react-native";
 import { Svg,Path } from "react-native-svg";
-// import { PERMISSIONS,request, requestMultiple,checkMultiple } from "react-native-permissions";
 
-const Post = ({navigation}) =>{
+const Post = ({navigation, route}) =>{
     const style = StyleSheet.create({
         container: {
             flex: 1,

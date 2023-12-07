@@ -9,7 +9,10 @@ import OnBoarding from './screens/Onboarding.js';
 import Tab from './screens/Tab.js';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import firebase from '@react-native-firebase/app';
+import storage from '@react-native-firebase/storage';
+import getFeedData from './services/feedData.js';
+import getDataFromAsyncStorage from './services/retrieveData.js';
 
 export default function App() {
   const navigationRef = useNavigationContainerRef();
@@ -19,13 +22,25 @@ export default function App() {
     const checkAuthState = async () => {
         const user = await AsyncStorage.getItem('user');
         if (user) {
+            
+            const userData = JSON.parse(user);
+            const uid = userData.uid;
+            await AsyncStorage.setItem('uid', uid);
+
             // User is signed in, navigate to the home screen
             navigationRef.navigate('Tab');
+            
         } else {
             // User is not signed in, navigate to the login screen
             navigationRef.navigate('Onboarding');
         }
     };
+
+    const dataGetter = async () => {
+        await getFeedData();
+    } 
+
+    dataGetter();
 
     checkAuthState();
 }, []);

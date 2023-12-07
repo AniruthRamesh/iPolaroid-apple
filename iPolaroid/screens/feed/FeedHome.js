@@ -1,40 +1,26 @@
-import React from "react";
+import React, { useEffect,useState } from "react";
 import { View,  StyleSheet, Text,  TouchableOpacity, SafeAreaView,FlatList } from "react-native";
 import Card from "../../components/Card";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const FeedHome = ({navigation}) =>{
     // this below is a sample mimicing how data is going to flow.
     const images = require("../../assets/images/exit.jpg");
-    const data = [
-        {
-            image:images,
-            caption:"Caption",
-            description:"Description",
-            date:"Dec 5, 2023"
-        },
+    const [data,setData] = useState([]);
 
-        {
-            image:images,
-            caption:"Caption",
-            description:"Description",
-            date:"Dec 5, 2023"
-        },
+    useEffect(() => {
+        const getData = async () => {
+            const feedData = await AsyncStorage.getItem('data');
+            // console.log(feedData);
+            if (feedData) {
+                const newData = JSON.parse(feedData);
+                setData(newData);
+            }
+        }
 
-        {
-            image:images,
-            caption:"Caption",
-            description:"Description",
-            date:"Dec 5, 2023"
-        },
+        getData();
+    }, []);
 
-        {
-            image:images,
-            caption:"Caption",
-            description:"Description",
-            date:"Dec 5, 2023"
-        },
-        
-    ];
     const style = StyleSheet.create({
         header:{
             fontFamily: 'ChelseaMarket-Regular',
@@ -57,7 +43,7 @@ const FeedHome = ({navigation}) =>{
 
         safeArea: {
             flex: 1,
-            paddingBottom: 20, // Adjust this value as needed
+            paddingBottom: 30, // Adjust this value as needed
         },
     });
 
@@ -72,7 +58,7 @@ const FeedHome = ({navigation}) =>{
             >
                 <Card image={item.image} caption={item.caption} />
                 {!lastItem && <View style={style.horizontalDivider} />}
-                {lastItem && <View style={{ marginBottom: 20 }} />}
+                {lastItem && <View style={{ marginBottom: 40 }} />}
             </TouchableOpacity>
         );
     }
@@ -88,7 +74,7 @@ const FeedHome = ({navigation}) =>{
                     data={keyedData}
                     renderItem={({ item, index }) => renderItem({ item, index })}
                     keyExtractor={item => item.key}
-                    contentContainerStyle={{ paddingBottom: 90 }}
+                    contentContainerStyle={{ paddingBottom: 100 }}
                 />
             </View>
         </SafeAreaView>
