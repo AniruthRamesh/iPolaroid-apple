@@ -14,7 +14,14 @@ const postToDatabase = async (image, caption,description,date,type) => {
 
     try{
         //users (collection) > uid(document) > post(collection) > document (auto generated id) > fields
-        const userPostsRef = firebase.firestore().collection('users').doc(uid).collection('post');
+        const userPostsRef = firebase.firestore().collection('users').doc(uid);
+
+        const userDoc = await userPostsRef.get();
+        if (!userDoc.exists) {
+            await userPostsRef.set({ createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+        }
+
+        const userPostsDoc = userPostsRef.collection('post');
 
         const newPost = {
             image: image,
@@ -25,7 +32,7 @@ const postToDatabase = async (image, caption,description,date,type) => {
             formattedDate: formattedDate,
             };
         
-        const docRef = await userPostsRef.add(newPost);
+        const docRef = await userPostsDoc.add(newPost);
         return docRef.id;
     } catch(e){
         console.error(e);
