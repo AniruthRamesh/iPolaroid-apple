@@ -4,7 +4,7 @@ import FastImage from "react-native-fast-image";
 import Video from 'react-native-video'; 
 
 
-const Card = ({image,caption}) => {
+const Card = ({image,caption,type}) => {
     const style = StyleSheet.create({
         card:{
             width: 350,
@@ -67,6 +67,7 @@ const Card = ({image,caption}) => {
 
     // Function to check for common video file extensions
     function isVideoFile(filePath) {
+        if(type == 'video') return true;
         const videoExtensions = ['.mp4', '.avi', '.mov', '.wmv', '.flv', '.mkv','MOV']; // Add more as needed
         return filePath && typeof filePath === 'string' && videoExtensions.some(ext => filePath.includes(ext));
     }

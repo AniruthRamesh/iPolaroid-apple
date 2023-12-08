@@ -4,7 +4,7 @@ import Card from "../../components/Card";
 import { useNavigation } from "@react-navigation/native";
 
 const Preview = ({route}) => {
-    const {image} = route.params;
+    const {image,type} = route.params;
     const navigation = useNavigation();
 
     const goBack = () => {
@@ -12,7 +12,7 @@ const Preview = ({route}) => {
     }
 
     const goNext = () => {
-        navigation.navigate("PostData",{image:image});
+        navigation.navigate("PostData",{image:image,type:type});
     }
 
     const style = StyleSheet.create({

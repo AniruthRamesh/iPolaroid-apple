@@ -46,6 +46,14 @@ const FeedHome = ({navigation}) =>{
             flex: 1,
             paddingBottom: 30, // Adjust this value as needed
         },
+
+        defaultview:{
+            flex: 1,
+            
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 110,
+        }
     });
 
     const keyedData = data.map((item, index) => ({ ...item, key: String(index) }));
@@ -57,7 +65,7 @@ const FeedHome = ({navigation}) =>{
             <TouchableOpacity onPress={() => {navigation.navigate("FeedInfo",{data:item})}} style={style.image}
                 activeOpacity={0.6}
             >
-                <Card image={item.image} caption={item.caption} />
+                <Card image={item.image} caption={item.caption} type={item.type} />
                 {!lastItem && <View style={style.horizontalDivider} />}
                 {lastItem && <View style={{ marginBottom: 40 }} />}
             </TouchableOpacity>
@@ -71,12 +79,19 @@ const FeedHome = ({navigation}) =>{
                 <Text style={style.header}>Nostalgia</Text>
                 <View style={style.horizontalDivider}/>
                 
-                 <FlatList
+                 {data.length > 0 ? 
+                    (<FlatList
                     data={keyedData}
-                    renderItem={({ item, index }) => renderItem({ item, index })}
-                    keyExtractor={item => item.key}
-                    contentContainerStyle={{ paddingBottom: 100 }}
-                />
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.key}
+                    showsVerticalScrollIndicator={false}/>) 
+                    :
+                    (<View style={style.defaultview}>
+                        <TouchableOpacity onPress={()=>{navigation.navigate("New Post")}}>
+                            <Card image={"https://images.unsplash.com/photo-1512168203104-3910bc2bcd54?q=80&w=2674&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} caption={"click here to add post"} />
+                        </TouchableOpacity>
+                    </View>)
+                    }
             </View>
         </SafeAreaView>
     );

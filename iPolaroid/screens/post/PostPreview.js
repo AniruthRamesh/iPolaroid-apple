@@ -10,7 +10,7 @@ import { useState } from "react";
 import { Alert } from "react-native";
 
 const PostPreview = ({route}) => {
-    const {image,caption,description,date} = route.params;
+    const {image,caption,description,date,type} = route.params;
     const navigation = useNavigation();
 
     const post = async () => {
@@ -22,7 +22,7 @@ const PostPreview = ({route}) => {
             return;
         }
 
-        const docid = await postToDatabase(url,caption,description,date);
+        const docid = await postToDatabase(url,caption,description,date,type);
         if(docid == undefined || docid == "" || docid == null){
             alert("Error in uploading, please try again.");
             setIsLoading(false);
@@ -32,7 +32,7 @@ const PostPreview = ({route}) => {
         setIsLoading(false);
         setPostSucess(true);
         Alert.alert(
-            "Post Status",
+            "Status",
             "Your post has been uploaded successfully",
             [
               { text: "OK", onPress: () => navigation.navigate('Post') }

@@ -6,6 +6,8 @@ import DatePicker from "react-native-date-picker";
 
 const PostData = ({route}) => {
     const image = route.params.image;
+    const type = route.params.type;
+    // console.log(type);
     const navigation = useNavigation();
     const [caption,setCaption] = useState("");
     const [description,setDescription] = useState("");
@@ -26,7 +28,7 @@ const PostData = ({route}) => {
     const goNext = () => {
         const formattedDate = formatDate(date); 
         {/* Nothing should be empty before sending */}
-        console.log(image, caption, description, formattedDate);
+        // console.log(image, caption, description, formattedDate);
         if(image == undefined || caption == "" || description == "" || formattedDate == ""){
             alert("Please fill all the fields");
             return;
@@ -36,7 +38,8 @@ const PostData = ({route}) => {
             image: image,
             caption: caption,
             description: description,
-            date: formattedDate 
+            date: formattedDate ,
+            type: type,
         });
     };
     

@@ -1,10 +1,12 @@
 import React from "react";
 import { firebase } from "@react-native-firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import moment from "moment/moment";
 
 
-const postToDatabase = async (image, caption,description,date) => {
+const postToDatabase = async (image, caption,description,date,type) => {
     const uid = await AsyncStorage.getItem('uid');
+    const formattedDate = moment(date, "MMM D, YYYY").toDate();
     if (!uid) {
         console.error('User ID not found');
         return;
@@ -19,6 +21,8 @@ const postToDatabase = async (image, caption,description,date) => {
             caption: caption,
             description: description,
             date: date,
+            type: type,
+            formattedDate: formattedDate,
             };
         
         const docRef = await userPostsRef.add(newPost);

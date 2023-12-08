@@ -6,6 +6,11 @@ import { PERMISSIONS,check,checkMultiple } from "react-native-permissions";
 import { launchCamera,launchImageLibrary } from "react-native-image-picker";
 
 const Post = ({navigation, route}) =>{
+
+    function isVideoFile(filePath) {
+        const videoExtensions = ['.mp4', '.avi', '.mov', '.wmv', '.flv', '.mkv','MOV']; // Add more as needed
+        return filePath && typeof filePath === 'string' && videoExtensions.some(ext => filePath.includes(ext));
+    }
     const style = StyleSheet.create({
         container: {
             flex: 1,
@@ -57,7 +62,7 @@ const Post = ({navigation, route}) =>{
             }
             const uri = data[0].uri;
             // console.log(uri);
-            navigation.navigate('Preview',{image:uri});
+            navigation.navigate('Preview',{image:uri,type:'video'});
         });
     }
 
@@ -79,7 +84,7 @@ const Post = ({navigation, route}) =>{
                 return;
             }
             const uri = data[0].uri;
-            navigation.navigate('Preview',{image:uri});
+            navigation.navigate('Preview',{image:uri,type:'photo'});
             
         });
     }
@@ -101,7 +106,14 @@ const Post = ({navigation, route}) =>{
                 return;
             }
             const uri = data[0].uri;
-            navigation.navigate('Preview',{image:uri});
+            const isVideo = isVideoFile(uri);
+            
+            if(isVideo){
+                navigation.navigate('Preview',{image:uri,type:'video'});
+            }
+            else{
+                navigation.navigate('Preview',{image:uri,type:'photo'});
+            }
         });
     }
 
