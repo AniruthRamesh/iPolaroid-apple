@@ -3,15 +3,46 @@ import { View,StyleSheet,Image,Text,SafeAreaView , TouchableOpacity,ScrollView} 
 import { useNavigation } from "@react-navigation/native";
 import FeedInfoPreview from "../../components/FeedInfoPreview";
 import { Svg,Path } from "react-native-svg";
-
+import uploadData from "../../services/uploadData";
+import postToDatabase from "../../services/postToDatabase";
+import { ActivityIndicator, Modal } from "react-native";
+import { useState } from "react";
+import { Alert } from "react-native";
 
 const PostPreview = ({route}) => {
     const {image,caption,description,date} = route.params;
     const navigation = useNavigation();
 
-    const post = () => {
-        console.log("Post");
+    const post = async () => {
+        const url = await uploadData(image,caption);
+
+        if(url == undefined || url == "" || url == null){
+            alert("Error in uploading, please try again.");
+            setIsLoading(false);
+            return;
+        }
+
+        const docid = await postToDatabase(url,caption,description,date);
+        if(docid == undefined || docid == "" || docid == null){
+            alert("Error in uploading, please try again.");
+            setIsLoading(false);
+            return;
+        }
+        
+        setIsLoading(false);
+        setPostSucess(true);
+        Alert.alert(
+            "Post Status",
+            "Your post has been uploaded successfully",
+            [
+              { text: "OK", onPress: () => navigation.navigate('Post') }
+            ],
+            { cancelable: false }
+        );
     }
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [postSucess, setPostSucess] = useState(false);
 
     const style = StyleSheet.create({
         backButton:{
@@ -66,6 +97,15 @@ const PostPreview = ({route}) => {
 
     return(
         <SafeAreaView style={{flex:1}}>
+            <Modal
+                transparent={true}
+                animationType="none"
+                visible={isLoading}
+                >
+                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
+                    <ActivityIndicator size="large" />
+                </View>
+            </Modal>
             <View style={style.backButton}>
                     <TouchableOpacity onPress={()=>{navigation.goBack()}}>
                         <Svg height="25" width="25" viewBox="0 0 24 24">
@@ -80,7 +120,13 @@ const PostPreview = ({route}) => {
                 <FeedInfoPreview caption={caption} date={date} description={description} image={image}/>
 
                 <View style={style.buttonContainer}>
-                    <TouchableOpacity onPress={post} style={style.button}>
+                    <TouchableOpacity onPress={
+                        ()=>{
+                            setIsLoading(true);
+                            
+                            post(); 
+                        }
+                    } style={style.button}>
                         <Text style={style.buttonText}>post</Text>
                     </TouchableOpacity>
                 </View>

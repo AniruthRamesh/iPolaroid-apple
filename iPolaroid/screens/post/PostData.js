@@ -2,7 +2,7 @@ import React , {useState} from "react";
 import { View,StyleSheet,TextInput,Text,SafeAreaView,TouchableOpacity, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Svg,Path } from "react-native-svg";
-// import DatePicker from "react-native-date-picker";
+import DatePicker from "react-native-date-picker";
 
 const PostData = ({route}) => {
     const image = route.params.image;
@@ -27,6 +27,11 @@ const PostData = ({route}) => {
         const formattedDate = formatDate(date); 
         {/* Nothing should be empty before sending */}
         console.log(image, caption, description, formattedDate);
+        if(image == undefined || caption == "" || description == "" || formattedDate == ""){
+            alert("Please fill all the fields");
+            return;
+        }
+
         navigation.navigate("PostPreview", {
             image: image,
             caption: caption,
@@ -136,8 +141,9 @@ const PostData = ({route}) => {
                     <TouchableOpacity onPress={()=> {setOpen(true)}} style={style.button}>
                             <Text style={style.buttonText}>Pick Date</Text>
                     </TouchableOpacity>
-                    {/* <DatePicker
+                    <DatePicker
                         modal
+                        mode="date"
                         open={open}
                         date={date}
                         onConfirm={(date) => {
@@ -147,10 +153,10 @@ const PostData = ({route}) => {
                         onCancel={() => {
                         setOpen(false)
                         }}
-                    /> */}
+                    />
                     
                 </View>
-                {/*Date picking is still not done */}
+                
 
                 <View style={style.horizontalDivider}/>
 
