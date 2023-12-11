@@ -2,10 +2,14 @@ import React from "react";
 import { View,StyleSheet,TouchableOpacity} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Card from "../components/Card";
+import { useDispatch,useSelector } from "react-redux";
+import authReducer from "../reducers/authReducer";
+import { logout } from "../reducers/authReducer";
 
 const Logout = ({ navigation }) => {
     const handleLogout = async () => {
         await AsyncStorage.removeItem("user");
+        // dispatch(logout());
         navigation.navigate("Onboarding");
     };
 

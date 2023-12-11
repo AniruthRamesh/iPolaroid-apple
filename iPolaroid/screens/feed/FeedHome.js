@@ -1,26 +1,29 @@
 import React, { useEffect,useState } from "react";
-import { View,  StyleSheet, Text,  TouchableOpacity, SafeAreaView,FlatList } from "react-native";
+import { View,  StyleSheet, Text,  TouchableOpacity, SafeAreaView,FlatList,RefreshControl,Modal, ActivityIndicator } 
+from "react-native";
 import Card from "../../components/Card";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import FeedInfo from "./FeedInfo";
 
+
+import { useDispatch,useSelector } from "react-redux";
+import { fetchFeedData } from "../../reducers/feedDataReducer";
+
+//add loading indicator when the feed data is not yet dont fetching
 const FeedHome = ({navigation}) =>{
-    // this below is a sample mimicing how data is going to flow.
-    const images = require("../../assets/images/exit.jpg");
-    const [data,setData] = useState([]);
 
-    useEffect(() => {
-        const getData = async () => {
-            const feedData = await AsyncStorage.getItem('data');
-            // console.log(feedData);
-            if (feedData) {
-                const newData = JSON.parse(feedData);
-                setData(newData);
-            }
-        }
+    const dispatch = useDispatch();
+    const { data, loading, error,lastFetchedId } = useSelector(state => state.feedData); // Accessing data from Redux state
+    // const user = useSelector(state => state.authReducer.user);
+    console.log("data",data[0].id);
+    console.log("date",data[0].date);
 
-        getData();
-    }, []);
+
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const handleRefresh = async () => {
+        setRefreshing(true);
+        dispatch(fetchFeedData(lastFetchedId)); // Dispatch the thunk on refresh
+        setRefreshing(false);
+    };
 
     const style = StyleSheet.create({
         header:{
@@ -67,7 +70,7 @@ const FeedHome = ({navigation}) =>{
             >
                 <Card image={item.image} caption={item.caption} type={item.type} />
                 {!lastItem && <View style={style.horizontalDivider} />}
-                {lastItem && <View style={{ marginBottom: 40 }} />}
+                {lastItem && <View style={{ marginBottom: 120 }} />}
             </TouchableOpacity>
         );
     }
@@ -75,6 +78,15 @@ const FeedHome = ({navigation}) =>{
     return(
         // we need to use flatlist to lazy load the data.
         <SafeAreaView style={style.safeArea}>
+            <Modal
+                transparent={true}
+                animationType="none"
+                visible={loading}
+                >
+                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
+                    <ActivityIndicator size="large" />
+                </View>
+            </Modal>
             <View>
                 <Text style={style.header}>Nostalgia</Text>
                 <View style={style.horizontalDivider}/>
@@ -84,7 +96,16 @@ const FeedHome = ({navigation}) =>{
                     data={keyedData}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.key}
-                    showsVerticalScrollIndicator={false}/>) 
+                    showsVerticalScrollIndicator={false}
+                    onEndReached={()=> {dispatch(fetchFeedData())}}
+                    onEndReachedThreshold={0.7}
+                    refreshControl = {
+                        (<RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={handleRefresh}
+                        />)
+                    }/>
+                    )   
                     :
                     (<View style={style.defaultview}>
                         <TouchableOpacity onPress={()=>{navigation.navigate("New Post")}}>

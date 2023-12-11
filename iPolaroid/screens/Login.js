@@ -2,16 +2,16 @@ import React from "react";
 import { View, Image, StyleSheet,  SafeAreaView } from "react-native";
 import BackButton from "../components/BackButton";
 import Card from "../components/Card";
-import CustomButton from "../components/CustomButton";
-import Svg, { Path } from "react-native-svg";   
+import CustomButton from "../components/CustomButton"
 import { appleAuth } from '@invertase/react-native-apple-authentication';
 import auth from '@react-native-firebase/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import ReactNativeBiometrics, { BiometryTypes } from 'react-native-biometrics';
-
+import { useDispatch} from "react-redux";
+import { login } from "../reducers/authReducer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const Login = ({navigation}) => {     
+    // const dispatch = useDispatch();
     
     async function onAppleButtonPress() {
         console.log("apple button pressed");
@@ -34,9 +34,14 @@ const Login = ({navigation}) => {
             // Sign the user in with the credential
             const userCredential = await auth().signInWithCredential(appleCredential);
             
-            // Store user data in AsyncStorage
-            await AsyncStorage.setItem('user', JSON.stringify(userCredential.user));
+            const uid = userCredential.user.uid;
+            const user = JSON.stringify(uid);
 
+            // Store user data in AsyncStorage
+            await AsyncStorage.setItem('user', user);
+            
+            console.log("user",user);
+            // dispatch(login(user));
         
             // Navigate to the home screen
             navigation.navigate('Tab'); // Replace 'Home' with your home screen's name

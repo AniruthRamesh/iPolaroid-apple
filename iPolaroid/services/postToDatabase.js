@@ -1,12 +1,15 @@
 import React from "react";
 import { firebase } from "@react-native-firebase/firestore";
+import {  useSelector } from "react-redux/es/hooks/useSelector";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment/moment";
 
 
 const postToDatabase = async (image, caption,description,date,type) => {
-    const uid = await AsyncStorage.getItem('uid');
+    const user = await AsyncStorage.getItem('user');
+    const uid = JSON.parse(user);
     const formattedDate = moment(date, "MMM D, YYYY").toDate();
+    // const uid = useSelector(state => state.authReducer.user);
     if (!uid) {
         console.error('User ID not found');
         return;
@@ -36,7 +39,8 @@ const postToDatabase = async (image, caption,description,date,type) => {
         return docRef.id;
     } catch(e){
         console.error(e);
-    }
+    }    
+
 
 };
 
