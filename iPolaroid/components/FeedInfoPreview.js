@@ -2,7 +2,7 @@ import React from "react";
 import { View,StyleSheet,Image,Text,SafeAreaView } from "react-native";
 import Card from "./Card";
 
-const FeedInfoPreview = ({caption,description,date,image}) => {
+const FeedInfoPreview = ({caption,description,date,image,type}) => {
 
     const style = StyleSheet.create({
         date:{
@@ -27,7 +27,7 @@ const FeedInfoPreview = ({caption,description,date,image}) => {
             <Text style={style.date}>
                 {date}
             </Text>
-            <Card image={image} caption={caption}/>
+            <Card image={image} caption={caption} type={type}/>
             <Text style={style.description}>
                 {description}
             </Text>

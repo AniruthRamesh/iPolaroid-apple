@@ -8,7 +8,7 @@ import FeedInfoPreview from "../../components/FeedInfoPreview";
 
 const FeedInfo = ({route}) =>{
     const data = route.params.data;
-    const { caption, date, description, image, key } = data;
+    const { caption, date, description, image, key,type} = data;
 
     const navigation = useNavigation();
 
@@ -76,7 +76,7 @@ const FeedInfo = ({route}) =>{
             <Text style={style.preview}>Old Memories</Text>
             <View style={style.horizontalDivider}/>
             <ScrollView>
-                <FeedInfoPreview caption={caption} date={date} description={description} image={image}/>
+                <FeedInfoPreview caption={caption} date={date} description={description} image={image} type={type}/>
             </ScrollView>
         </SafeAreaView>
     );

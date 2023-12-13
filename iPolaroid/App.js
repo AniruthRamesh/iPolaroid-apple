@@ -18,7 +18,7 @@ export default function App() {
   const navigationRef = useNavigationContainerRef();
 
   useEffect(() => {
-
+    
     if (Platform.OS === "ios") {
       enableScreens(false);
     }

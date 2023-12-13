@@ -13,8 +13,8 @@ const FeedHome = ({navigation}) =>{
     const dispatch = useDispatch();
     const { data, loading, error,lastFetchedId } = useSelector(state => state.feedData); // Accessing data from Redux state
     // const user = useSelector(state => state.authReducer.user);
-    console.log("data",data[0].id);
-    console.log("date",data[0].date);
+    // console.log("data",data[0].id);
+    // console.log("date",data[0].date);
 
 
     const [refreshing, setRefreshing] = React.useState(false);
@@ -75,6 +75,16 @@ const FeedHome = ({navigation}) =>{
         );
     }
 
+    const renderEmpty = () => {
+        return (
+            <View style={style.defaultview}>
+                <TouchableOpacity onPress={()=>{navigation.navigate("New Post")}}>
+                    <Card image={"https://images.unsplash.com/photo-1512168203104-3910bc2bcd54?q=80&w=2674&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} caption={"click here to add post"} />
+                </TouchableOpacity>
+            </View>
+        );
+    }
+
     return(
         // we need to use flatlist to lazy load the data.
         <SafeAreaView style={style.safeArea}>
@@ -91,7 +101,7 @@ const FeedHome = ({navigation}) =>{
                 <Text style={style.header}>Nostalgia</Text>
                 <View style={style.horizontalDivider}/>
                 
-                 {data.length > 0 ? 
+                 {/* {data.length > 0 ? 
                     (<FlatList
                     data={keyedData}
                     renderItem={renderItem}
@@ -107,12 +117,29 @@ const FeedHome = ({navigation}) =>{
                     }/>
                     )   
                     :
-                    (<View style={style.defaultview}>
-                        <TouchableOpacity onPress={()=>{navigation.navigate("New Post")}}>
-                            <Card image={"https://images.unsplash.com/photo-1512168203104-3910bc2bcd54?q=80&w=2674&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} caption={"click here to add post"} />
-                        </TouchableOpacity>
-                    </View>)
-                    }
+                    (
+                        <View style={style.defaultview}>
+                            <TouchableOpacity onPress={()=>{navigation.navigate("New Post")}}>
+                                <Card image={"https://images.unsplash.com/photo-1512168203104-3910bc2bcd54?q=80&w=2674&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} caption={"click here to add post"} />
+                            </TouchableOpacity>
+                        </View>
+                    )
+                    } */}
+
+                    <FlatList
+                        data={keyedData}
+                        ListEmptyComponent={renderEmpty}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.key}
+                        showsVerticalScrollIndicator={false}
+                        onEndReached={()=> {dispatch(fetchFeedData())}}
+                        onEndReachedThreshold={0.7}
+                        refreshControl = {
+                            (<RefreshControl
+                                refreshing={refreshing}
+                                onRefresh={handleRefresh}
+                            />)
+                    }/>         
             </View>
         </SafeAreaView>
     );

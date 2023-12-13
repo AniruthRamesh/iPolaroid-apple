@@ -1,11 +1,13 @@
 import React from "react";
-import { View,  StyleSheet, Text,  TouchableOpacity, SafeAreaView } from "react-native";
+import { useState } from "react";
+import { View,  StyleSheet, Text,  TouchableOpacity, SafeAreaView,ActivityIndicator,Modal } from "react-native";
 import { Svg,Path } from "react-native-svg";
 import { requestLibraryPermission,requestCameraPermission,requestVideoPermission } from "../services/requestPermissions";
 import { PERMISSIONS,check,checkMultiple } from "react-native-permissions";
 import { launchCamera,launchImageLibrary } from "react-native-image-picker";
 
 const Post = ({navigation, route}) =>{
+    const [loading, setLoading] = useState(false);
 
     function isVideoFile(filePath) {
         const videoExtensions = ['.mp4', '.avi', '.mov', '.wmv', '.flv', '.mkv','MOV']; // Add more as needed
@@ -57,12 +59,11 @@ const Post = ({navigation, route}) =>{
 
         const result = await launchCamera({mediaType:'video'},(response)=>{
             const data = response.assets;
-            if(data==undefined){
+            if(data==undefined || data==null){
                 return;
             }
             const uri = data[0].uri;
-            // console.log(uri);
-            navigation.navigate('Preview',{image:uri,type:'video'});
+            navigation.navigate("PostData", { image: uri, type: "video"});
         });
     }
 
@@ -80,7 +81,7 @@ const Post = ({navigation, route}) =>{
 
         const result = await launchCamera({mediaType:'photo'},(response)=>{
             const data = response.assets;
-            if(data==undefined){
+            if(data==undefined || data==null){
                 return;
             }
             const uri = data[0].uri;
@@ -89,7 +90,7 @@ const Post = ({navigation, route}) =>{
         });
     }
 
-    const handleLibrary = async ()=>{
+    const handleImageLibrary = async ()=>{
         check(PERMISSIONS.IOS.PHOTO_LIBRARY).then((status)=>{
             if(status[PERMISSIONS.IOS.PHOTO_LIBRARY] == 'granted'){
                 console.log("library already granted")
@@ -100,25 +101,51 @@ const Post = ({navigation, route}) =>{
             }
         });
         
-        const result = await launchImageLibrary({mediaType:'mixed'},(response)=>{
+        
+        const result = await launchImageLibrary({mediaType:'photo'},(response)=>{
             const data = response.assets;
-            if(data==undefined){
+            if(data==undefined || data==null){
                 return;
             }
             const uri = data[0].uri;
-            const isVideo = isVideoFile(uri);
+            navigation.navigate('Preview',{image:uri,type:'photo'});
             
-            if(isVideo){
-                navigation.navigate('Preview',{image:uri,type:'video'});
+        });
+    }
+
+    const handleVideoLibrary = async ()=>{
+        check(PERMISSIONS.IOS.PHOTO_LIBRARY).then((status)=>{
+            if(status[PERMISSIONS.IOS.PHOTO_LIBRARY] == 'granted'){
+                console.log("library already granted")
             }
             else{
-                navigation.navigate('Preview',{image:uri,type:'photo'});
+                requestLibraryPermission();
+                return;
             }
+        });
+        
+        const result = await launchImageLibrary({mediaType:'video', videoQuality:['high','medium']},(response)=>{
+            const data = response.assets;
+            if(data==undefined || data==null){
+                return;
+            }
+            const uri = data[0].uri;
+            navigation.navigate("PostData", { image: uri, type: "video"});
+            
         });
     }
 
     return(
         <SafeAreaView style={style.container}>
+            <Modal
+                transparent={true}
+                animationType="none"
+                visible={loading}
+                >
+                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)'}}>
+                    <ActivityIndicator size="large" />
+                </View>
+            </Modal>
             <View style={style.container}>
                 <Text style={style.heading}>Create a new
                     {'\n'} memory</Text>
@@ -133,6 +160,17 @@ const Post = ({navigation, route}) =>{
                         </Svg>
                     </TouchableOpacity>
 
+                    {/*use image picker and select from gallery, only photos */}
+                    <TouchableOpacity onPress={handleImageLibrary} style={style.iconPadding}>
+                        <Svg width={50} height={50} viewBox="0 0 24 24" fill="rgb(3,3,3)">
+                            <Path fill="none" d="M0 0h24v24H0z" />
+                            <Path d="M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-11-4 2.03 2.71L16 11l4 5H8l3-4zM2 6v14c0 1.1.9 2 2 2h14v-2H4V6H2z" />
+                        </Svg>
+                    </TouchableOpacity>
+
+                    
+                </View>
+                <View style={style.icons}>
                     {/*open camera and take video */}
                     <TouchableOpacity onPress={handleVideo} style={style.iconPadding}>
                         <Svg width={50} height={50} viewBox="0 0 24 24" fill="rgb(3,3,3)">
@@ -141,11 +179,11 @@ const Post = ({navigation, route}) =>{
                         </Svg>
                     </TouchableOpacity>
 
-                    {/*use image picker and select from gallery, either photo or video */}
-                    <TouchableOpacity onPress={handleLibrary} style={style.iconPadding}>
-                        <Svg width={50} height={50} viewBox="0 0 24 24" fill="rgb(3,3,3)">
-                            <Path fill="none" d="M0 0h24v24H0z" />
-                            <Path d="M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-11-4 2.03 2.71L16 11l4 5H8l3-4zM2 6v14c0 1.1.9 2 2 2h14v-2H4V6H2z" />
+                    {/*use image picker and select from gallery, only videos */}
+                    <TouchableOpacity onPress={handleVideoLibrary} style={style.iconPadding}>
+                        <Svg width={50} height={50} viewBox="0 0 24 24" fill="black">
+                            <Path d="M0 0h24v24H0z" fill="none" />
+                            <Path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z" />
                         </Svg>
                     </TouchableOpacity>
                 </View>

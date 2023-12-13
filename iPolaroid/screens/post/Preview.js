@@ -5,15 +5,26 @@ import { useNavigation } from "@react-navigation/native";
 
 const Preview = ({route}) => {
     const {image,type} = route.params;
+    console.log("image",image);
+    console.log("type",type);
     const navigation = useNavigation();
 
     const goBack = () => {
-        navigation.goBack();
+        try {
+            navigation.goBack();
+        } catch (error) {
+            console.error('Error going back:', error);
+        }
     }
-
+    
     const goNext = () => {
-        navigation.navigate("PostData",{image:image,type:type});
+        try {
+            navigation.navigate("PostData", { image: image, type: type });
+        } catch (error) {
+            console.error('Error navigating to PostData:', error);
+        }
     }
+    
 
     const style = StyleSheet.create({
         container:{
@@ -54,7 +65,7 @@ const Preview = ({route}) => {
     
     return(
         <SafeAreaView style={style.container}>
-            <Card image={image} caption={""}/>
+            <Card image={image} caption={""} type={type}/>
 
             <View style={style.row}>
                 <TouchableOpacity onPress={goNext} style={style.button}>

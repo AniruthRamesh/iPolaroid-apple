@@ -13,18 +13,22 @@ export const fetchFeedData = createAsyncThunk(
         if (!user) return { data: [], lastFetchedId: null };
 
         const lastFetchedId = lastFetchedIdFromState || getState().feedData.lastFetchedId;
-        const limit = 8;
-
+    
         let query = firestore().collection('users').doc(user).collection('post').orderBy('formattedDate', 'desc');
 
-        // if (lastFetchedId) {
-        //     const lastFetchedDoc = await firestore().collection('users').doc(user).collection('post').doc(lastFetchedId).get();
-        //     query = query.startAfter(lastFetchedDoc);
-        // }
-
-        // query = query.limit(limit);
+        
         const querySnapshot = await query.get();
-        const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        // const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const data =  querySnapshot.docs.map(doc => {
+            const docData = doc.data();
+            return {
+                id: doc.id,
+                ...docData,
+                // Convert formattedDate to a string
+                formattedDate: docData.formattedDate.toDate().toISOString()
+            }
+        });
+
 
         const newLastFetchedId = data.length > 0 ? data[data.length - 1].id : lastFetchedId;
 
