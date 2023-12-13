@@ -1,6 +1,4 @@
-import React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {useNavigationContainerRef, useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { useDispatch,useSelector } from "react-redux";
 import { fetchFeedData } from "../reducers/feedDataReducer";
@@ -8,7 +6,6 @@ import { fetchFeedData } from "../reducers/feedDataReducer";
 const Splash = ({navigation}) =>{
   const dispatch = useDispatch();
   const {lastFetchedId} = useSelector(state => state.feedData);
-  // const user = useSelector(state => state.authReducer.user);
   console.log("lastFetchedId",lastFetchedId);
 
     const checkAuthState = async () => {

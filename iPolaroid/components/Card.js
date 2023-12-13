@@ -3,7 +3,6 @@ import React from "react";
 import FastImage from "react-native-fast-image";
 import Video from 'react-native-video'; 
 
-
 const Card = ({image,caption,type}) => {
     const style = StyleSheet.create({
         card:{
@@ -13,9 +12,9 @@ const Card = ({image,caption,type}) => {
             alignSelf: 'center',
         },
         image:{
-            flex: 1, // Add flex to fill the container
-            width: '100%', // Use 100% of the container's width
-            height: '100%', // Use 100% of the container's height
+            flex: 1, 
+            width: '100%', 
+            height: '100%',
             alignSelf: 'center',
         },
 
@@ -104,8 +103,6 @@ const Card = ({image,caption,type}) => {
                     />
                 )
             }
-
-
             </View>
             <Text style={style.caption}>{caption}</Text>
         </View>

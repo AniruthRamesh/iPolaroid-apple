@@ -5,8 +5,6 @@ import { useNavigation } from "@react-navigation/native";
 
 const Preview = ({route}) => {
     const {image,type} = route.params;
-    console.log("image",image);
-    console.log("type",type);
     const navigation = useNavigation();
 
     const goBack = () => {

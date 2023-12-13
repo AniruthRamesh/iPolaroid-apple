@@ -1,4 +1,3 @@
-// src/store/feedSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -18,7 +17,6 @@ export const fetchFeedData = createAsyncThunk(
 
         
         const querySnapshot = await query.get();
-        // const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         const data =  querySnapshot.docs.map(doc => {
             const docData = doc.data();
             return {
@@ -35,7 +33,7 @@ export const fetchFeedData = createAsyncThunk(
         return { data, lastFetchedId: newLastFetchedId };
 
       } catch (error) {
-        console.log(error);
+       
       }
     }
 );
@@ -57,7 +55,6 @@ const feedSlice = createSlice({
             })
             .addCase(fetchFeedData.fulfilled, (state, action) => {
                 const newData = action.payload.data.filter(newItem => !state.data.some(existingItem => existingItem.id === newItem.id));
-                console.log("newData",newData);
                 state.data = [...state.data, ...newData];
                 state.lastFetchedId = action.payload.lastFetchedId;
                 state.loading = false;

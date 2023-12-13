@@ -1,5 +1,5 @@
 import React from "react";
-import { View,StyleSheet,Image,Text,SafeAreaView , TouchableOpacity,ScrollView} from "react-native";
+import { View,StyleSheet,Text,SafeAreaView , TouchableOpacity,ScrollView} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import FeedInfoPreview from "../../components/FeedInfoPreview";
 import { Svg,Path } from "react-native-svg";

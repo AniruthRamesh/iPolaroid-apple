@@ -1,17 +1,14 @@
 import React from "react";
-import { View, Image, StyleSheet,  SafeAreaView } from "react-native";
+import { View, StyleSheet,  SafeAreaView } from "react-native";
 import BackButton from "../components/BackButton";
 import Card from "../components/Card";
 import CustomButton from "../components/CustomButton"
 import { appleAuth } from '@invertase/react-native-apple-authentication';
 import auth from '@react-native-firebase/auth';
-import { useDispatch} from "react-redux";
-import { login } from "../reducers/authReducer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const Login = ({navigation}) => {     
-    // const dispatch = useDispatch();
     
     async function onAppleButtonPress() {
         console.log("apple button pressed");
@@ -41,12 +38,11 @@ const Login = ({navigation}) => {
             await AsyncStorage.setItem('user', user);
             
             console.log("user",user);
-            // dispatch(login(user));
         
             // Navigate to the home screen
-            navigation.navigate('Tab'); // Replace 'Home' with your home screen's name
+            navigation.navigate('Tab'); 
         } catch (error) {
-            console.error(error);
+            return;
             // Handle errors as needed
         }
     }

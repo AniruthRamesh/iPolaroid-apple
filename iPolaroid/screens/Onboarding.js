@@ -1,9 +1,8 @@
 import React from "react";
-import { View,  StyleSheet, Text,  TouchableOpacity } from "react-native";
+import { View,  StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Card from "../components/Card";
 import CustomButton from "../components/CustomButton";
-import FastImage from "react-native-fast-image";
 
 
 export default function OnBoarding({navigation}) {

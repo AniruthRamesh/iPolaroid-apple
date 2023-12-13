@@ -1,7 +1,7 @@
 import { StatusBar } from 'react-native';
 import { StyleSheet} from 'react-native';
 import { useEffect} from 'react';
-import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {store,persistor} from './store.js';
 import { Provider } from 'react-redux';
@@ -12,18 +12,13 @@ import OnBoarding from './screens/Onboarding.js';
 import Tab from './screens/Tab.js';
 import { enableScreens } from 'react-native-screens';
 import Splash from "./screens/Splash.js";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
-  const navigationRef = useNavigationContainerRef();
-
   useEffect(() => {
     
     if (Platform.OS === "ios") {
       enableScreens(false);
     }
-  
-
 }, []);
 
   const Stack = createNativeStackNavigator();
@@ -43,8 +38,8 @@ export default function App() {
             <Stack.Screen name="Tab" component={Tab} />
           </Stack.Navigator>
         </NavigationContainer>
-      </PersistGate>
-   </Provider> 
+       </PersistGate>
+    </Provider> 
   ); 
 }
 

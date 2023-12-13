@@ -4,12 +4,11 @@ import {  useSelector } from "react-redux/es/hooks/useSelector";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment/moment";
 
-
 const postToDatabase = async (image, caption,description,date,type) => {
+
     const user = await AsyncStorage.getItem('user');
     const uid = JSON.parse(user);
     const formattedDate = moment(date, "MMM D, YYYY").toDate();
-    // const uid = useSelector(state => state.authReducer.user);
     if (!uid) {
         console.error('User ID not found');
         return;
@@ -40,8 +39,6 @@ const postToDatabase = async (image, caption,description,date,type) => {
     } catch(e){
         console.error(e);
     }    
-
-
 };
 
 export default postToDatabase;

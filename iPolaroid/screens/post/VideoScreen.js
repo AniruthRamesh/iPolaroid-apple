@@ -10,6 +10,7 @@ const VideoScreen = ({navigation}) => {
         padding: 10,
         },
     });
+    
     //change the image and also how we send the data.
     const imageP = require("../../assets/images/onboarding.jpg");
     return(

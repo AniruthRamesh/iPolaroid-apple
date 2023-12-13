@@ -5,8 +5,6 @@ import Logout from "../screens/Logout";
 import PostHome from "./PostHome";
 import Feed from "./Feed";
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { Animated } from "react-native";
-import { useRef,useEffect,useState } from "react";
 
 const Tab = ({navigation,route})=>{
     const tabBarHeight = 50;

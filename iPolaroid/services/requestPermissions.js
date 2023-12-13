@@ -1,7 +1,6 @@
-import React from "react";
-import { PERMISSIONS,request,requestMultiple} from "react-native-permissions";
+import { PERMISSIONS,requestMultiple} from "react-native-permissions";
 import { openSettings } from "react-native-permissions";
-import { Alert,Linking } from "react-native";
+import { Alert } from "react-native";
 
 const requestCameraPermission = async () => {
      requestMultiple([PERMISSIONS.IOS.CAMERA,PERMISSIONS.IOS.MICROPHONE]).then((statuses)=>{

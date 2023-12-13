@@ -4,8 +4,6 @@ import { useNavigation } from "@react-navigation/native";
 import { Svg,Path } from "react-native-svg";
 import FeedInfoPreview from "../../components/FeedInfoPreview";
 
-
-
 const FeedInfo = ({route}) =>{
     const data = route.params.data;
     const { caption, date, description, image, key,type} = data;

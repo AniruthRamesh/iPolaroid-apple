@@ -1,11 +1,9 @@
 import { firebase } from "@react-native-firebase/storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useSelector } from "react-redux";
 
 const uploadData = async (image, caption) => {
     const user = await AsyncStorage.getItem('user');
     const uid = JSON.parse(user);
-    // const uid = useSelector(state => state.authReducer.user);
     if (!uid) {
         console.error('User ID not found');
         return;
@@ -28,9 +26,7 @@ const uploadData = async (image, caption) => {
         return url;
     } catch (e) {
         console.error(e);
-    }
-
-    
+    } 
 };
 
 export default uploadData;

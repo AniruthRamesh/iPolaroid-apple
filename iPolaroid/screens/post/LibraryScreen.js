@@ -1,5 +1,5 @@
 import React from "react";
-import { View,StyleSheet,Image,Text ,TouchableOpacity,SafeAreaView} from "react-native";
+import { View,StyleSheet,Text ,TouchableOpacity,SafeAreaView} from "react-native";
 import Svg, { Path } from "react-native-svg";
 
 const LibraryScreen = ({navigation}) => {

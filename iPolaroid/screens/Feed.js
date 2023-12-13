@@ -1,11 +1,8 @@
 import React from "react";
-import { View,  StyleSheet, Text,  TouchableOpacity, SafeAreaView,FlatList } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FeedHome from "./feed/FeedHome";
 import FeedInfo from "./feed/FeedInfo";
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import fadeTransition from "../utils/transitionAnimation";
-import { useEffect } from "react";
 
 
 const Feed = ({navigation,route}) =>{
